@@ -1,0 +1,23 @@
+library(e1071)
+library(caTools)
+library(caret)
+
+bike=read.csv('/home/ashish/Desktop/WORKING LP1/DA/DA_4/bike.csv')
+str(bike)
+
+bike$Member.type=factor(bike$Member.type,levels = c('Member','Casual'),labels = c(1,0))
+bike$Bike.number=as.numeric(bike$Bike.number)
+set.seed(100)
+split=sample.split(bike,SplitRatio=7/10)
+train=subset(bike,split==TRUE)
+test=subset(bike,split==FALSE)
+train=train[,c(1,8,9)]
+train
+test=test[,c(1,8,9)]
+classifier=naiveBayes(x=train[-3],y=train$Member.type)
+classifier
+a=predict(classifier,test[-3])
+
+cf=confusionMatrix(a,test$Member.type)
+cf
+

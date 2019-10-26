@@ -1,0 +1,77 @@
+// C program for different tree traversals 
+#include <iostream>
+#include<omp.h>
+#include<time.h>
+using namespace std; 
+
+/* A binary tree node has data, pointer to left child 
+and a pointer to right child */
+class node {
+	public:
+	int data; 
+	node *left;
+	node *right; 
+	node(int data) 
+	{ 
+		this->data = data;
+		left = right = NULL; 
+	}
+};
+
+/* Given a binary tree, print its nodes in inorder*/
+void printInorder2(node* node1) 
+{ 
+	if (node1 == NULL) 
+		return; 
+
+	/* first recur on left child */
+	
+	printInorder2(node1->left); 
+
+	/* then print the data of node */
+	cout << node1->data << " "; 
+
+	/* now recur on right child */
+	
+	printInorder2(node1->right); 
+} 
+void printInorder(node* node1) 
+{ 
+	if (node1 == NULL) 
+		return; 
+
+	/* first recur on left child */
+	#pragma omp parallel section
+	printInorder(node1->left); 
+
+	/* then print the data of node */
+	cout << node1->data << " "; 
+
+	/* now recur on right child */
+	#pragma omp parallel section
+	printInorder(node1->right); 
+} 
+
+/* Driver program to test above functions*/
+int main() 
+{ 
+	node *root = new node(1); 
+	root->left = new node(2); 
+	root->right = new node(3); 
+	root->left->left = new node(4); 
+	root->left->right = new node(5); 
+
+	cout << "\nInorder traversal of binary tree is \n"; 
+	
+	double st=omp_get_wtime();
+	printInorder2(root); 
+	double des=omp_get_wtime();
+	printf("Serial Time : %f\n",des-st);
+	
+	st=omp_get_wtime();
+	printInorder(root); 
+	des=omp_get_wtime();
+	printf("Parallel Time : %f\n",des-st);
+	return 0; 
+} 
+

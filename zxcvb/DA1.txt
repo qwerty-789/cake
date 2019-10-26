@@ -1,0 +1,28 @@
+dataset = read.csv('iris.csv')
+str(dataset)
+
+ncol(dataset)
+lapply(dataset,class)  # print the type of attribute
+summary(dataset)
+
+mean(dataset$Sepal.Length)
+min(dataset$Sepal.Length)
+max(dataset$Sepal.Length)
+sum(dataset$Sepal.Length)
+sd(dataset$Sepal.Length)
+var(dataset$Sepal.Length)
+range(dataset$Sepal.Length)
+
+dataset
+
+hist(dataset$Sepal.Length,col='red',xlab = 'petal length',main='hist')
+hist(dataset$Sepal.Width)
+st= as.numeric(dataset$Species)
+hist(st)
+
+boxplot(dataset$Sepal.Length)$out
+boxplot(dataset$Sepal.Width)$out
+boxplot(dataset$Petal.Length)
+boxplot(dataset$Petal.Width)
+boxplot(dataset)
+

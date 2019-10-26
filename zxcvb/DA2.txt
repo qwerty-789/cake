@@ -1,0 +1,25 @@
+library(e1071)
+library(caTools)
+library(caret)
+
+dataset = read.csv('/home/ashish/Desktop/WORKING LP1/DA/DA_2/dia.csv')
+str(dataset)
+summary(dataset)
+lapply(dataset, class)
+
+dataset$Outcome = factor(dataset$Outcome, levels = c(0, 1), labels = c(0, 1))
+split_set = sample.split(dataset, SplitRatio = 2/3)
+train_set = subset(dataset, split_set == TRUE)
+test_set = subset(dataset, split_set == FALSE)
+str(train_set)
+str(test_set)
+
+summary(train_set)
+classifier = naiveBayes(x = train_set[-9], y = train_set$Outcome)
+classifier
+predicted_data = predict(classifier, newdata = test_set[-9])
+predicted_data
+
+cf = confusionMatrix(predicted_data, test_set$Outcome)
+cf
+
